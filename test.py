@@ -2,16 +2,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-data= pd.read_csv("data/data.csv")
+data= pd.read_csv("data/manip1.1.csv")
 
 data["timestamp"]=pd.to_datetime(data['timestamp'])
+data=data[data['macModule']=="A8032A311DAA"]
 print(data.head(5))
 #data=data[(data['timestamp'] > '2023-06-01 09:50:00.000000')&(data['timestamp'] < '2023-06-01 09:55:30.000000')]
 
 
 test=sns.lineplot(  
     data=data, hue="macModule",
-    x="timestamp", y="rssi", 
+    x="timestamp", y="rssi", markers=True
 )
  
 plt.xlabel('timestamp')
