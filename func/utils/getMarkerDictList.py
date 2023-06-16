@@ -15,7 +15,6 @@ def getMarkerDictList(rssi_df, timestamp_list):
                 markerdict[MacModule]=[rssi_df.iloc[index_count]['rssi']]
             #if key exist, we add the rssi value
             else:
-        
                 markerdict[MacModule].append(rssi_df.iloc[index_count]['rssi'])    
             index_count+=1
         MarkerDictList.append(markerdict)

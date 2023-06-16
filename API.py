@@ -9,11 +9,9 @@ class API:
     def __init__(self, API_KEY):
         self.API_KEY = API_KEY
         self.BaseURL = "https://cartobat.net/"+API_KEY
-
     def isValid(self,data):
         "check if the data is valid by taking the raw API data as input"
-        return (data["erreur"] == 'no')
-    
+        return (data["erreur"] == 'no')  
     def getCartoWearList(self):
         print("getCartoWearList")
         # Sets up the URL to fetch the tag list.
@@ -99,8 +97,7 @@ class API:
         if self.isValid(data):
             result = data["resultat"]
             self.BuildingLayers=result
-            return result
-        
+            return result    
     def getAreasInLayer(self,layerid=None):
         '''
         get the list of areas in a layer
