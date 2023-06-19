@@ -18,6 +18,6 @@ def getMarkerDictList(rssi_df, timestamp_list):
             index_count+=1
         #we calculate the average of the rssi values for each macModule
         for rssi in markerdict.values():
-            rssi=sum(rssi)/len(rssi)
+            rssi=int(sum(rssi)/len(rssi))
         MarkerDictList.append(markerdict)
     return(MarkerDictList)
