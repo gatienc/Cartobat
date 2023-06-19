@@ -46,13 +46,14 @@ class API:
         response = urllib.request.urlopen(request)
         data = json.loads(response.read())
         return data
-    def getRawDataForCartoWear(self,MAC_WEAR:str,StartTimestamp:pd.Timestamp,EndTimestamp:pd.Timestamp,filepath:str):
+    def getRawDataForCartoWear(self,MAC_WEAR:str,StartTimestamp:pd.Timestamp,EndTimestamp:pd.Timestamp,**kwargs):
         '''
         get the raw data for a given tag and save it in a csv file
         MAC_WEAR: the MAC_WEAR of the tag
         TimeStamp.format: '2023-06-01%2008:45:00.000'
         StartTimestamp: the start timestamp of the data
         EndTimestamp: the end timestamp of the data
+        filepath: kwargs, the path of the csv file to save the data
         '''
         StartTimestamp=StartTimestamp.strftime("%Y-%m-%d%%20%H:%M:%S.%f")
         EndTimestamp=EndTimestamp.strftime("%Y-%m-%d%%20%H:%M:%S.%f")
@@ -63,13 +64,17 @@ class API:
         # Extracts the list of tags from the response.
         if self.isValid(data):
             result = data["resultat"]
+            
+            filepath=kwargs.get('filepath',False)
+            if filepath:
             #save the result in a csv file
-            with open(filepath, 'w', newline='') as csvfile:
-                fieldnames = ['timestamp', 'macModule', 'rssi']
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                writer.writeheader()
-                for row in result:
-                    writer.writerow(row)
+                with open(filepath, 'w', newline='') as csvfile:
+                    fieldnames = ['timestamp', 'macModule', 'rssi']
+                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                    writer.writeheader()
+                    for row in result:
+                        writer.writerow(row)
+            return result
     def getBuilding(self):
         '''
         get the list of building
