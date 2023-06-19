@@ -19,7 +19,7 @@ def RawDataFeatures(MarkerDictList,timestamp_list,MacModuleLocation,cmap):
 
     features = []
     for index in range(len(pointList)):
-        rgb_list=cmap(rssiList[index][0]+80)
+        rgb_list=cmap(rssiList[index]+80)
         hex_color=mcolors.rgb2hex(rgb_list)
         feature = {
             'type': 'Feature',
@@ -35,7 +35,7 @@ def RawDataFeatures(MarkerDictList,timestamp_list,MacModuleLocation,cmap):
                     "color": hex_color,
                     "fillColor": hex_color,    
                     "fillOpacity": "0.8",  
-                    "radius": str(1*(80+rssiList[index][0]))            
+                    "radius": str(1*(80+rssiList[index]))            
                 }}
             }
         features.append(feature)
