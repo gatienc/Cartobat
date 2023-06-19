@@ -3,6 +3,7 @@ import urllib.request
 from secret import API_KEY
 import csv
 import pandas as pd
+import ssl
 
 
 class API:
@@ -42,8 +43,11 @@ class API:
             urllib.error.URLError: If an error occurs during the request.
             json.JSONDecodeError: If an error occurs while decoding the JSON data.
         """
+        #should be removed
+        # Create a unverified certificate context
+        context = ssl._create_unverified_context()
         request = urllib.request.Request(url)
-        response = urllib.request.urlopen(request)
+        response = urllib.request.urlopen(request,context=context)
         data = json.loads(response.read())
         return data
     def getRawDataForCartoWear(self,MAC_WEAR:str,StartTimestamp:pd.Timestamp,EndTimestamp:pd.Timestamp,**kwargs):
