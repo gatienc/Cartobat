@@ -4,6 +4,7 @@ paper/
 note.md
 data/
 output/
+*.pdf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
