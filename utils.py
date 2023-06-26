@@ -20,9 +20,9 @@ def get_Map_csv():
 
 Gatien_API=API(API_KEY)
 hour_correction=2
-start=pd.to_datetime("2023-06-01 08:00:46.000000")-pd.Timedelta(hour_correction, unit="h")
-end=pd.to_datetime("2023-06-01 10:00:00.000000")-pd.Timedelta(hour_correction, unit="h")
-Gatien_API.getRawDataForCartoWear(MAC_WEAR,start,end,filepath="data/manipstatic.csv")
+start=pd.to_datetime("2023-06-20 15:01:00.000000")-pd.Timedelta(hour_correction, unit="h")
+end=pd.to_datetime("2023-06-20 15:06:00.000000")-pd.Timedelta(hour_correction, unit="h")
+Gatien_API.getRawDataForCartoWear(MAC_WEAR,start,end,filepath="data/manip3/104D.csv")
 
 # modules=Gatien_API.getCartoModuleWithLocationList()
 # with open('data/carteModulePalaiseau.csv', 'w') as csv_file:
