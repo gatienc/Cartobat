@@ -21,6 +21,7 @@ def RawDataFeatures(MarkerDictList,timestamp_list,MacModuleLocation,cmap):
     for index in range(len(pointList)):
         rgb_list=cmap(rssiList[index]+80)
         hex_color=mcolors.rgb2hex(rgb_list)
+        print([MarkerTimestamplist[index]])
         feature = {
             'type': 'Feature',
             'geometry': {

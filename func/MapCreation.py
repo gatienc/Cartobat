@@ -12,7 +12,6 @@ def MeanMarkerPosition(marker_gdf):
 def MapCreation(map_gdf,marker_gdf):
     location=MeanMarkerPosition(marker_gdf)
     m = folium.Map(location = location,max_zoom=30, zoom_start=20,crs="EPSG3857")
-    folium.TileLayer('stamenterrain').add_to(m)
     tooltip = folium.features.GeoJsonTooltip(fields=['ID_element', 'nom'], 
                                             labels=True,
                                             stick=False,
