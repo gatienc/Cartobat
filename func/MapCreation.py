@@ -12,7 +12,12 @@ def MeanMarkerPosition(marker_gdf):
 def MapCreation(map_gdf,**kwargs):
     if "marker_gdf" in kwargs:
         marker_gdf=kwargs["marker_gdf"]
-    location=MeanMarkerPosition(marker_gdf)
+    if "marker_gdf" in kwargs and "location" not in kwargs:
+        location=MeanMarkerPosition(marker_gdf)
+    elif "location" in kwargs:
+        location=kwargs["location"]
+    else:
+        raise TypeError("No location given")
     m = folium.Map(location = location,max_zoom=30, zoom_start=20,crs="EPSG3857")
     tooltip = folium.features.GeoJsonTooltip(fields=['ID_element', 'nom'], 
                                             labels=True,
