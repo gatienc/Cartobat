@@ -1,8 +1,15 @@
 from datetime import datetime
 import matplotlib as mpl
+import pandas as pd
 import matplotlib.colors as mcolors
+import geopandas as gpd
+import numpy as np
 
-def RawDataFeatures(MarkerDictList,timestamp_list,MacModuleLocation,cmap):
+
+def RawDataFeatures(MarkerDictList,timestamp_list,MacModuleLocation,cmap=None):
+    if cmap is None:
+        cmap = mpl.colormaps['jet'].resampled(30)
+        cmap = mpl.colors.ListedColormap(cmap(np.linspace(0, 1, 30)))
     input_format = '%Y-%m-%d %H:%M:%S.%f'
     output_format = '%Y-%m-%dT%H:%M:%S'
     pointList=[]
@@ -21,7 +28,6 @@ def RawDataFeatures(MarkerDictList,timestamp_list,MacModuleLocation,cmap):
     for index in range(len(pointList)):
         rgb_list=cmap(rssiList[index]+80)
         hex_color=mcolors.rgb2hex(rgb_list)
-        print([MarkerTimestamplist[index]])
         feature = {
             'type': 'Feature',
             'geometry': {
@@ -41,3 +47,4 @@ def RawDataFeatures(MarkerDictList,timestamp_list,MacModuleLocation,cmap):
             }
         features.append(feature)
     return features
+
