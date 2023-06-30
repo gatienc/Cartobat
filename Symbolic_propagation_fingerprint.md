@@ -37,3 +37,11 @@ Les zones hachurées sont les zones possibles pour le CartoModule ayant la coule
 Une première approche serait de corriger la perte de signal par la poche en ajoutant un offset à la mesure de signal reçue. Cependant, il faudrait évaluer cet offset ce qui pourrait être compliqué. La première approche consiste à recalibrer l'offset à chaque fois que le porteur est proche d'un CartoModule. Cela pourrait cependant être compliqué à mettre en place.
 
 Une deuxième approche qui pourrait être utilisée dans un cas où le nombre de CartoModule est grand (similaire à la situation de Palaiseau) serait de réaliser, au moment de la sélection de la salle, la sélection globale de la salle de manière itérative en ajoutant plus de décibel sur l'ensemble des mesures des CartoModules. Sur l'ensemble des salles, celle ayant le plus d'intersection et de proximité avec les valeurs de calibrage devrait être la salle la plus probable.
+
+## Résultat obtenus:
+
+en se plaçant dans les mêmes conditions que la manipulation précédente, i.e règle portant le CartoTag au dessus de la tête.
+
+en analysant le résultat [résultat](output/spfmap.html)
+
+je me suis dis qu'il y avait un truc à faire pour coupler le résultat obtenus avec la WC localization. (Car quand on reçoit fort on sait qu'on est proche d'un récepteur) alors que quand on reçoit faiblement on sait pas (peut être loin ou peut être absorbé par un aléa)

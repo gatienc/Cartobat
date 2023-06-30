@@ -39,10 +39,10 @@ def RawDataFeatures(MarkerDictList,timestamp_list,MacModuleLocation,cmap=None):
                 "icon": 'circle',
                 "popup": str(rssiList[index]),
                 "iconstyle": {
-                    "color": hex_color,
+                    # "color": hex_color,
                     "fillColor": hex_color,    
                     "fillOpacity": "0.8",  
-                    "radius": str(1*(80+rssiList[index]))            
+                    "radius": str(1*(100+rssiList[index]))            
                 }}
             }
         features.append(feature)
