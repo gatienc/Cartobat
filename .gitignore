@@ -4,6 +4,7 @@ paper/
 note.md
 data/
 output/
+note/
 *.pdf
 
 # Byte-compiled / optimized / DLL files

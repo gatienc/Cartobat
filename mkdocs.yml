@@ -1,0 +1,4 @@
+site_name: Cartobat Documentation
+site_url: https://cartodoc.com
+theme:
+    name: readthedocs
