@@ -1,6 +1,6 @@
 import json
 import urllib.request
-from secret import API_KEY, SITE_URL
+import os
 import csv
 import pandas as pd
 
@@ -13,8 +13,8 @@ class API:
         Args:
             API_KEY (str): The API key to use for authentication.
         """
-        self.API_KEY = API_KEY  
-        self.BaseURL = SITE_URL+'/'+API_KEY
+        self.API_KEY = os.environ['API_KEY']  
+        self.BaseURL = os.environ['SITE_URL']+'/'+self.API_KEY
     @staticmethod
     def __isValid(data):
         """
@@ -176,10 +176,11 @@ class API:
             return result
 
 if __name__ == "__main__":
+    
+
     callApi=API()
     hour_correction=2
     start=pd.to_datetime("2023-06-22 10:40:00.000000")-pd.Timedelta(hour_correction, unit="h")
     end=pd.to_datetime("2023-06-22 11:30:35.000000")-pd.Timedelta(hour_correction, unit="h")
-
     data=callApi.getRawDataForCartoWear('C77C2F92664E',start,end)
-
+    print(data)
