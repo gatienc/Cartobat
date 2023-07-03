@@ -4,6 +4,7 @@ import os
 import csv
 import pandas as pd
 
+from utils.time_formatter
 
 class API:
     def __init__(self):
@@ -176,8 +177,7 @@ class API:
             return result
 
 if __name__ == "__main__":
-    
-
+    import init
     callApi=API()
     hour_correction=2
     start=pd.to_datetime("2023-06-22 10:40:00.000000")-pd.Timedelta(hour_correction, unit="h")
