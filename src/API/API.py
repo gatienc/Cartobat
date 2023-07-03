@@ -4,6 +4,7 @@ import os
 import csv
 import pandas as pd
 
+from ..utils.time_formatting import local_to_utc, utc_to_local
 
 class API:
     def __init__(self):
@@ -47,11 +48,23 @@ class API:
         data = json.loads(response.read())
         return data
     @staticmethod
-    def __toTimestampedDataFrame(data:list)->pd.DataFrame:
+    def __toTimestampedDataFrame(data:list,toLocal:bool = True)->pd.DataFrame:
+        """
+        Transform the raw data from the API into a timestamped dataframe and pass to local time.
+        Args:
+            data (list): The raw data from the API.
+            toLocal (bool, optional): If True, the timestamp is converted to local time. Defaults to True.
+        Returns:
+            pd.DataFrame: The timestamped dataframe.        
+        """
+        
         data=pd.DataFrame(data)
         data["timestamp"]=pd.to_datetime(data['timestamp'])
+        
+        if toLocal:
+            data["timestamp"]=data["timestamp"].apply(utc_to_local)
+        
         return data
-
     def getCartoWearList(self)->list:
         """
         Retrieves the CartoWear list from the API.
@@ -83,6 +96,12 @@ class API:
         Returns:
             list: The raw data if valid, None otherwise.
         """
+        
+        # format the timestamp to the UTC format
+        StartTimestamp=local_to_utc(StartTimestamp)
+        EndTimestamp=local_to_utc(EndTimestamp)
+        
+        # Sets up the URL to fetch the tag list.
         StartTimestamp=StartTimestamp.strftime("%Y-%m-%d%%20%H:%M:%S.%f")
         EndTimestamp=EndTimestamp.strftime("%Y-%m-%d%%20%H:%M:%S.%f")
         url = self.BaseURL + "/getRawDataForCartoWear/"+MAC_WEAR+"/"+StartTimestamp+"/"+EndTimestamp
@@ -99,7 +118,7 @@ class API:
                     writer.writeheader()
                     for row in result:
                         writer.writerow(row)
-            return result
+            return self.__toTimestampedDataFrame(result,toLocal=True)
     def getBuilding(self)->list:
         """
         Retrieve the list of buildings from the API.
