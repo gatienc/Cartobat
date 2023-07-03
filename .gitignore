@@ -1,4 +1,3 @@
-test/
 paper/
 note.md
 data/
@@ -6,6 +5,7 @@ output/
 note/
 *.pdf
 .env
+test_func
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
