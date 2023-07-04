@@ -5,7 +5,7 @@ import datetime
 from zoneinfo import ZoneInfo
 
 
-def utc_to_local(utc_time:pd.Timestamp)->pd.Timestamp:
+def utc_to_local(utc_time:pd.Timestamp):
     """Convert UTC time to local time.
 
     Parameters

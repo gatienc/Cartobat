@@ -81,7 +81,7 @@ class API:
             CartoWearList = data["resultat"]
             return CartoWearList
         else:
-            return None
+            raise Exception("Error while retrieving the CartoWear list.")
 
     def getRawDataForCartoWear(self,MAC_WEAR:str,StartTimestamp:pd.Timestamp,EndTimestamp:pd.Timestamp,**kwargs)->list:
         """
