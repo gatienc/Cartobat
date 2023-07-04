@@ -2,3 +2,7 @@ site_name: Cartobat Documentation
 site_url: https://cartodoc.com
 theme:
     name: readthedocs
+nav:
+    - Home: index.md
+    - Data Gathering: Data_Gathering.md
+    - Data Pre-Processing: Data_Pre-Processing.md

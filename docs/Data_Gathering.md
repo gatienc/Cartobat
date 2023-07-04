@@ -1,4 +1,5 @@
-## API Class
+## API Documentation
+
 
 The `API` class provides methods for interacting with an API and retrieving data. It offers the following methods:
 
