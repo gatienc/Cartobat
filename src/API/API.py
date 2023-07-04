@@ -13,6 +13,7 @@ class API:
 
         Args:
             API_KEY (str): The API key to use for authentication.
+            BaseURL (str): The base URL of the API.
         """
         self.API_KEY = os.environ['API_KEY']  
         self.BaseURL = os.environ['SITE_URL']+'/'+self.API_KEY
@@ -119,6 +120,7 @@ class API:
                     for row in result:
                         writer.writerow(row)
             return self.__toTimestampedDataFrame(result,toLocal=True)
+
     def getBuilding(self)->list:
         """
         Retrieve the list of buildings from the API.
