@@ -1,10 +1,10 @@
 import os
-from src.init_config import init_config
-from src.API.API import API
-from src.utils.time_formatting import local_to_utc,utc_to_local
-from src.preprocessing.Preprocessor import Preprocessor
-from src.preprocessing.cleaner.remove_duplicates import remove_duplicates
-from src.preprocessing.filter.filter_by_time import filter_by_time
+from init_config import init_config
+from API import API
+from utils.time_formatting import local_to_utc,utc_to_local
+from preprocessing.Preprocessor import Preprocessor
+from preprocessing.cleaner.remove_duplicates import remove_duplicates
+from preprocessing.filter.filter_by_time import filter_by_time
 import pandas as pd
 from pytz import timezone
 

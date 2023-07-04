@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "cartobat"
+version = "0.1.0"
+description = "Cartobat package with utilities for Cartobat data analysis in notebooks"
+authors = ["gchenu <gatien+tsp@chenu.me>"]
+license = "AGPL"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

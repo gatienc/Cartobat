@@ -6,6 +6,7 @@ note/
 *.pdf
 .env
 test_func
+src/poetry.lock
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
