@@ -1,11 +1,10 @@
 import os
 
-from src import API, init_config
+from src import API
 import pandas as pd
 from pytz import timezone
 
 if __name__ == "__main__":
-    init_config()
     print(os.getenv('SITE_URL'))
     callApi=API()
     start="2023-06-22 10:40:00.000000"
