@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from src.API.API import API
+from src._API.API import API
 from secret import API_KEY
 import plotly.graph_objects as go
 

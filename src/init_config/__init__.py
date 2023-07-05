@@ -1,1 +1,1 @@
-from .init_config import init_config
+from .._init_config.init_config import init_config

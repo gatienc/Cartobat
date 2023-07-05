@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from Cartobat.src.API.API import API
+from Cartobat.src._API.API import API
 from secret import API_KEY,MAC_WEAR
 
 Gatien_API=API(API_KEY)
