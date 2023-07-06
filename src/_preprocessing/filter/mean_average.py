@@ -23,7 +23,7 @@ class mean_average_Filter(abstractFilter):
         #mean average filtering of rssi_df using the window size on the column rssi
         
         
-        rssi_df['rssi']=rssi_df['rssi'].rolling(self.window).mean()
+        rssi_df['rssi']=rssi_df['rssi'].rolling(self.window,center=True,min_periods=1,closed='both').mean()
 
         return rssi_df
     

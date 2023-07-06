@@ -137,7 +137,7 @@ class API:
             result = data["resultat"]
             self.Building=result[0]
             return result
-    def getLayersInBuilding(self,buildingid=None)->list:
+    def getLayersInBuilding(self,buildingid=None):
         """
         Retrieve the list of layers in a building.
 
@@ -158,7 +158,7 @@ class API:
             result = data["resultat"]
             self.BuildingLayers=result
             return result    
-    def getAreasInLayer(self,layerid=None)->list:
+    def getAreasInLayer(self,layerid=None):
         """
         Retrieve the list of areas in a layer.
 
