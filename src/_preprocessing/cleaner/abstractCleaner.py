@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 #abstract class
-class abstractFilter(ABC):
+class abstractCleaner(ABC):
     @abstractmethod
     def __init__(self):
         pass
     @abstractmethod
-    def filter(self,args):
+    def cleaner(self,args):
         pass
         
     def __call__(self,args):
-            return self.filter(args) # type: ignore
+            return self.cleaner(args) # type: ignore

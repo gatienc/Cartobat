@@ -1,5 +1,5 @@
-import abstractFilter
-class MeanAverageFilter(abstractFilter):
+from .abstractFilter import abstractFilter
+class mean_average_Filter(abstractFilter):
     """
     Mean average filtering the data
 
@@ -16,5 +16,8 @@ class MeanAverageFilter(abstractFilter):
     def __init__(self,window):
       self.window = window
     def filter(self, rssi_df):
-        rssi_df=rssi_df.rolling(self.window).mean()
+        print(rssi_df)
+        rssi_df=rssi_df.rolling(self.window).mean('rssi')
+        #rssi_df.mean()
+        return rssi_df
     

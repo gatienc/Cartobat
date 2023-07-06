@@ -21,3 +21,4 @@ def logger_config():
 
     # Addition of the flow manager to the logger
     logger.addHandler(console_handler)
+    logger.info('Logger configured')
