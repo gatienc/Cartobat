@@ -1,4 +1,8 @@
 from .abstractFilter import abstractFilter
+import logging
+
+logger = logging.getLogger('cartobat')
+
 class mean_average_Filter(abstractFilter):
     """
     Mean average filtering the data
@@ -16,8 +20,10 @@ class mean_average_Filter(abstractFilter):
     def __init__(self,window):
       self.window = window
     def filter(self, rssi_df):
-        print(rssi_df)
-        rssi_df=rssi_df.rolling(self.window).mean('rssi')
-        #rssi_df.mean()
+        #mean average filtering of rssi_df using the window size on the column rssi
+        
+        
+        rssi_df['rssi']=rssi_df['rssi'].rolling(self.window).mean()
+
         return rssi_df
     

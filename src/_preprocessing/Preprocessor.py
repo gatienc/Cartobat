@@ -18,32 +18,41 @@ class Preprocessor:
     def set_filter(self,filter:abstractFilter)->'Preprocessor':
         self.filter=filter
         return self
+    @staticmethod
+    def _add_row(df, row):
+        df=pd.concat([df,row])
+        return df
     def __segmenting(self,rssi_df):
+
         mac_module_list=rssi_df['macModule'].unique()
         empty_df = pd.DataFrame(columns=rssi_df.columns)
+
         filtered_df=empty_df.copy()
+
         for mac_module in mac_module_list:
             mac_module_rssi=rssi_df[rssi_df['macModule']==mac_module]
-            logger.info(f'filtering {mac_module}')
             segment=empty_df.copy()
+
             previous_time=mac_module_rssi.iloc[0]['timestamp']
             for index,row in mac_module_rssi.iterrows():
-                if row['timestamp']-previous_time>100*self.sampling_time:
-                    logger.info(f'{segment=}')
-
+                row=row.transpose()
+                delay=row['timestamp']-previous_time
+                if (delay>100*self.sampling_time):
                     filtered_df=pd.concat([filtered_df,self.filter(segment)])#type: ignore
                     segment=empty_df.copy()
                 else:
-                    segment=pd.concat([segment,row])#type: ignore
+                    test=pd.DataFrame(row).transpose()
+                    segment=pd.concat([segment,test],ignore_index=True)#type: ignore
+
                 previous_time=row['timestamp']
-            if not segment.empty : filtered_df=pd.concat([filtered_df,self.filter(segment)])#type: ignore
-        
+
+            if not segment.empty : filtered_df=pd.concat([filtered_df,self.filter(segment)])
+
         #sort by timestamp the filtered_df
         filtered_df=filtered_df.sort_values('timestamp') # type: ignore
         return(filtered_df)
     def process(self)->'pd.DataFrame':
         if not issubclass(type(self.cleaner), abstractCleaner):
-            print(self.cleaner)
             raise TypeError("Cleaner is not set, please use set_cleaner(cleaner:function)")
         if not issubclass(type(self.filter), abstractFilter):
             raise TypeError("Filter is not set, please use set_filter(filter:function)")
@@ -55,6 +64,7 @@ class Preprocessor:
         rssi_df=self.cleaner(self.rssi_df) # type: ignore
 
         logger.info('cleaned, filtering')
+
         filtered_df=self.__segmenting(rssi_df)
         
         
