@@ -80,7 +80,9 @@ class Preprocessor:
         #algorithm could be optimized by sorting the dataframe only once
         logger.info('first sort')
         rssi_df=self.rssi_df.sort_values('timestamp',ascending=True )
-        logger.info('sorted, cleaning')
+        logger.info('sorted, sampling')
+        rssi_df=self.sampling(rssi_df)
+        logger.info('sampled,cleaning')
 
         rssi_df=self.cleaner(self.rssi_df) # type: ignore
 

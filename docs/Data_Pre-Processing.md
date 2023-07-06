@@ -21,6 +21,7 @@ The raw rssi data comes in the form of :
 
 The filtering process is done in 3 steps:
 
-1. __Isolate__ the data of each MacModule
-2. __Apply__ a given __filter__ on the RSSI values (mean average, high enveloppe, Kalman filter)
-3. __Sample__ the filtered data every "sampling time".
+1. __Isolate__ the data of each MacModule (algoritmic optimization non-include)
+2. __Sample__ the filtered data every "sampling time".
+3. __Apply__ a given __filter__ on the RSSI values (mean average, high enveloppe, Kalman filter)
+
