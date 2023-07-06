@@ -14,10 +14,26 @@ class Preprocessor:
         self.sampling_time= timedelta(seconds=sampling_time) if sampling_time!=None else timedelta(seconds=0.5)#0.5 seconds window by default
 
     def sampling(self,rssi_df):
+        #data must be sorted by timestamp
         sampling_time=self.sampling_time
-        min(rssi_df['timestamp'])
-        
-        return self
+        min_time=min(rssi_df['timestamp']).round(freq='500L')-sampling_time#round th inferior
+        max_time=max(rssi_df['timestamp']).round(freq='500L')+sampling_time#round to superior
+        time_range=pd.date_range(min_time,max_time,freq=sampling_time)
+        count=0
+        sampled_df=pd.DataFrame(columns=rssi_df.columns)
+        mac_module=rssi_df['macModule'].iloc[0]
+        logger.info(f'{rssi_df=}')
+
+        for i in time_range:
+            #logger.info(f'i: {i}')
+            signal_intensity=-100#certainly not the best way to do it
+            while count< len(rssi_df) and i>rssi_df['timestamp'].iloc[count]:
+                signal_intensity=max(rssi_df['rssi'].iloc[count],signal_intensity)
+                #logger.debug('count: '+str(count)+' signal_intensity:'+str(signal_intensity))
+
+                count+=1
+            sampled_df=self._add_row(sampled_df,pd.DataFrame({'timestamp':i,'rssi':signal_intensity,'macModule':mac_module},index=[0]))
+        return sampled_df
     def set_cleaner(self,cleaner)->'Preprocessor':
         self.cleaner=cleaner
         return self
@@ -26,9 +42,10 @@ class Preprocessor:
         return self
     @staticmethod
     def _add_row(df, row):
-        df=pd.concat([df,row])
+        df=pd.concat([df,row],ignore_index=True)
         return df
     def __segmenting(self,rssi_df):
+        #must clean this : use add_row
 
         mac_module_list=rssi_df['macModule'].unique()
         empty_df = pd.DataFrame(columns=rssi_df.columns)
