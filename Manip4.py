@@ -2,13 +2,12 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from src._API.API import API
-from secret import API_KEY
+from src import init_config
 import plotly.graph_objects as go
-
+init_config()
 callApi=API()
-hour_correction=2
-start=pd.to_datetime("2023-06-22 10:40:00.000000")-pd.Timedelta(hour_correction, unit="h")
-end=pd.to_datetime("2023-06-22 11:30:35.000000")-pd.Timedelta(hour_correction, unit="h")
+start=pd.to_datetime("2023-06-22 10:40:00.000000")
+end=pd.to_datetime("2023-06-22 11:30:35.000000")
 
 data=callApi.getRawDataForCartoWear('C77C2F92664E',start,end)
 print(data)
