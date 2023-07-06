@@ -8,5 +8,6 @@ Like :
 SITE_URL="http://cartobat.net"
 API_KEY="1234abdc"
 MAC_WEAR_DICT={'name1':'id','name2':'id','name3':'id','name4':'id'}
+TIMEZONE=Europe/Paris
 
 ```

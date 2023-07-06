@@ -7,7 +7,7 @@ The `API` class provides methods for interacting with an API and retrieving data
 #### `getRawDataForCartoWear`
 
 Retrieve the raw data for a given CartoWear tag and save it in a CSV file.
-
+You must provide your local time, Class makes the translation to UTC time for calling the API. If you're not in Europe/Paris Timezone, you must provide the timezone in your .env file.
 **Parameters:**
 
 - `MAC_WEAR` (str): The MAC_WEAR of the tag.
