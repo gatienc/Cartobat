@@ -2,9 +2,9 @@ import os
 
 from src import API,Preprocessor
 from src._preprocessing.cleaner.remove_duplicates import remove_duplicates_Cleaner
-from src._preprocessing.filter.mean_average import mean_average_Filter
-from src._preprocessing.filter.max_average import max_average_Filter
-from src._preprocessing.filter.max_average_averaged import max_average_averaged_Filter
+from Cartobat.src._preprocessing.filter.moving_average import mean_average_Filter
+from Cartobat.src._preprocessing.filter.moving_max import max_average_Filter
+from Cartobat.src._preprocessing.filter.moving_max_averaged import max_average_averaged_Filter
 import pandas as pd
 from pytz import timezone
 from src._preprocessing.Preprocessor import Preprocessor
