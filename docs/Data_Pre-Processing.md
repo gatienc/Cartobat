@@ -3,7 +3,23 @@
 The `Preprocessing` class provides methods for preprocessing the data. Cleaning refer to the process of removing invalid data points, while filtering refers to the process of trying to reconstruct the RSSI signal received by a MacModule.
 
 __Cleaning__ applies on the __whole__ dataset, while __filtering__ applies on __each MacModule__ data.
+## Cleaning
 
+You can provide you're own cleaning function to the `Preprocessing` class. The function must be a child of the `abstractCleaner` class and overriding cleaning method.
+The `Preprocessing` class will then apply the function on the whole dataset.
+
+The current cleaning method implemented are:
+
+---
+### `remove_duplicates_Cleaner`
+
+Clean the data by removing the rows that are duplicated
+
+**Returns:**
+
+- pd.dataframe: Filtered Data
+  
+---
 
 ## Filtering
 
@@ -24,4 +40,15 @@ The filtering process is done in 3 steps:
 1. __Isolate__ the data of each MacModule (algoritmic optimization non-include)
 2. __Sample__ the filtered data every "sampling time".
 3. __Apply__ a given __filter__ on the RSSI values (mean average, high enveloppe, Kalman filter)
+
+
+The current filtering method implemented are:
+
+---
+
+### `MovingAverageFilter:`
+
+Apply a mean average filter on the RSSI values.
+
+**Parameters:**
 

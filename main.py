@@ -2,9 +2,9 @@ import os
 
 from src import API,Preprocessor
 from src._preprocessing.cleaner.remove_duplicates import remove_duplicates_Cleaner
-from Cartobat.src._preprocessing.filter.moving_average import mean_average_Filter
-from Cartobat.src._preprocessing.filter.moving_max import max_average_Filter
-from Cartobat.src._preprocessing.filter.moving_max_averaged import max_average_averaged_Filter
+from src._preprocessing.filter.moving_average import moving_average_Filter
+from src._preprocessing.filter.moving_max import moving_max_Filter
+from src._preprocessing.filter.moving_max_averaged import moving_max_averaged_Filter
 import pandas as pd
 from pytz import timezone
 from src._preprocessing.Preprocessor import Preprocessor
@@ -20,13 +20,13 @@ if __name__ == "__main__":
 
     preprocessor=Preprocessor(raw_data,sampling_time=3)
     mean_average_data=preprocessor.set_cleaner(remove_duplicates_Cleaner())\
-                .set_filter(mean_average_Filter(20))\
+                .set_filter(moving_average_Filter(20))\
                 .process()
     max_average_data=preprocessor.set_cleaner(remove_duplicates_Cleaner())\
-                .set_filter(max_average_Filter(20))\
+                .set_filter(moving_max_Filter(20))\
                 .process()
     max_average_averaged_data=preprocessor.set_cleaner(remove_duplicates_Cleaner())\
-            .set_filter(max_average_averaged_Filter(20))\
+            .set_filter(moving_max_averaged_Filter(20))\
             .process()
     
     fig = go.Figure()

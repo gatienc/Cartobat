@@ -7,6 +7,16 @@ import logging
 logger = logging.getLogger('cartobat')
 
 class Preprocessor:
+    """
+    Preprocessor class, used to preprocess the data
+    set you're cleaner and filter (with set_cleaner and set_filter),
+    before calling process()
+    args:
+        rssi_df: dataframe containing the data to preprocess
+        sampling_time: time between each sample, if None, base sampling is 0.5 seconds
+    
+    
+    """
     def __init__(self,rssi_df,*, sampling_time=None) -> None:
         self.rssi_df=rssi_df
         self.filter=None

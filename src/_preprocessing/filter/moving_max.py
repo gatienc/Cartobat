@@ -1,12 +1,11 @@
 from .abstractFilter import abstractFilter
 import logging
-from .max_average import max_average_Filter
 
 logger = logging.getLogger('cartobat')
 
-class max_average_averaged_Filter(abstractFilter):
+class moving_max_Filter(abstractFilter):
     """
-    Max average averaged filtering the data
+    Max average filtering the data
 
     Args:
         window : Size of the moving window
@@ -22,9 +21,8 @@ class max_average_averaged_Filter(abstractFilter):
       self.window = window
     def filter(self, rssi_df):
         #max average filtering of rssi_df using the window size on the column rssi
-        rssi_df=max_average_Filter(window=self.window).filter(rssi_df)
     
-        rssi_df['rssi']=rssi_df['rssi'].rolling(self.window,center=True,min_periods=1,closed='both').mean().round(1)#round to 1 decimal (could be changed)
+        rssi_df['rssi']=rssi_df['rssi'].rolling(self.window,center=True,min_periods=1,closed='both').max().round(1)#round to 1 decimal (could be changed)
 
         return rssi_df
     
