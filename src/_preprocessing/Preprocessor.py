@@ -3,6 +3,7 @@ from .filter.abstractFilter import abstractFilter
 from .cleaner.abstractCleaner import abstractCleaner
 from datetime import timedelta
 import logging
+import numpy as np
 
 logger = logging.getLogger('cartobat')
 
@@ -26,21 +27,17 @@ class Preprocessor:
     def sampling(self,rssi_df):
         #data must be sorted by timestamp
         sampling_time=self.sampling_time
-        min_time=min(rssi_df['timestamp']).round(freq='500L')-sampling_time#round th inferior
+        min_time=min(rssi_df['timestamp']).round(freq='500L')-sampling_time#round to inferior
         max_time=max(rssi_df['timestamp']).round(freq='500L')+sampling_time#round to superior
         time_range=pd.date_range(min_time,max_time,freq=sampling_time)
         count=0
         sampled_df=pd.DataFrame(columns=rssi_df.columns)
         mac_module=rssi_df['macModule'].iloc[0]
-        logger.info(f'{rssi_df=}')
 
         for i in time_range:
-            #logger.info(f'i: {i}')
-            signal_intensity=-100#certainly not the best way to do it
+            signal_intensity=np.nan#certainly not the best way to do it
             while count< len(rssi_df) and i>rssi_df['timestamp'].iloc[count]:
                 signal_intensity=max(rssi_df['rssi'].iloc[count],signal_intensity)
-                #logger.debug('count: '+str(count)+' signal_intensity:'+str(signal_intensity))
-
                 count+=1
             sampled_df=self._add_row(sampled_df,pd.DataFrame({'timestamp':i,'rssi':signal_intensity,'macModule':mac_module},index=[0]))
         return sampled_df
@@ -88,18 +85,20 @@ class Preprocessor:
         if not issubclass(type(self.filter), abstractFilter):
             raise TypeError("Filter is not set, please use set_filter(filter:function)")
         #algorithm could be optimized by sorting the dataframe only once
-        logger.info('first sort')
-        rssi_df=self.rssi_df.sort_values('timestamp',ascending=True )
+        rssi_df=self.rssi_df
+        logger.info('data Cleaning')
+        logger.debug(f'{rssi_df=}')
+        rssi_df=self.cleaner(rssi_df) # type: ignore
+        logger.info('cleaned, sorting')
+        logger.debug(f'{rssi_df=}')
+        rssi_df=rssi_df.sort_values('timestamp',ascending=True )
         logger.info('sorted, sampling')
+        logger.debug(f'{rssi_df=}')
         rssi_df=self.sampling(rssi_df)
-        logger.info('sampled,cleaning')
-
-        rssi_df=self.cleaner(self.rssi_df) # type: ignore
-
-        logger.info('cleaned, filtering')
-
+        logger.info('sampled,filtering')
+        logger.debug(f'{rssi_df=}')
         filtered_df=self.__segmenting(rssi_df)
-        
-        
+        logger.info('filtered')
+        logger.debug(f'{rssi_df=}')
         
         return filtered_df

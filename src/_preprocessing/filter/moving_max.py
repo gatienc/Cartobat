@@ -21,8 +21,6 @@ class moving_max_Filter(abstractFilter):
       self.window = window
     def filter(self, rssi_df):
         #max average filtering of rssi_df using the window size on the column rssi
-    
-        rssi_df['rssi']=rssi_df['rssi'].rolling(self.window,center=True,min_periods=1,closed='both').max().round(1)#round to 1 decimal (could be changed)
-
+        rssi_df['rssi']=rssi_df.rolling(self.window,center=True,min_periods=1,closed='both',on='timestamp').rssi.max().round(1)#round to 1 decimal (could be changed)
         return rssi_df
     
