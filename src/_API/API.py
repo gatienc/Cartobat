@@ -149,7 +149,13 @@ class API:
         """
         # Sets up the URL to fetch the tag list.
         if buildingid==None:
-            buildingid=self.Building['ID_batiment']
+            #a bit dirty but it works
+            try:
+                buildingid=self.Building['ID_batiment']
+            except:
+                buildingid=None
+            if buildingid==None:
+                buildingid=self.getBuilding()[0]['ID_batiment']
         url = self.BaseURL + "/getLayersInBuilding/"+str(buildingid)
         
         data=self.__make_request(url)

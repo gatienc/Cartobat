@@ -35,6 +35,8 @@ def gdfLoader(dataPath:str,positionColumn:str ="coordinates",dropPositionColumn:
     if dropPositionColumn:gdf=gdf.drop(columns=[positionColumn])
     #set the crs
     gdf=gdf.set_crs(crs="epsg:3857", allow_override=True)
+    gdf.to_crs(epsg=4326, inplace=True)
+
     return gdf
 
 def ReadMarkerMap(ModuleMapPath):
@@ -47,11 +49,7 @@ def ReadMarkerMap(ModuleMapPath):
     Input:
     ModuleMapPath: str
     the path to the csv file
-    positionColumn: str
-    position column name
-    dropPositionColumn: bool
-    if true drop the column with the coordinates
-
+    
     -------
     Output:
     GeoDataFrame
@@ -71,6 +69,8 @@ def ReadMarkerMap(ModuleMapPath):
     marker_gdf=marker_gdf.to_crs(epsg=4326)
     return marker_gdf
 
+# Deprecated
+# Should call API instead of loading from file
 def RSSIDataLoader(Data_Path):
     """
     Load the rssi data from the csv file and return a dataframe with the timestamp as index

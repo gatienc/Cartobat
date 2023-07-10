@@ -72,3 +72,11 @@ Retrieve the list of tags with their location.
 ---
 
 Please note that the code snippets are not included here for brevity. For more details and usage examples, please refer to the API documentation.
+
+
+### Usefull functions
+this functions are in utils.save.map.
+
+`get_Map_csv(callAPI,MapName)`
+    give the name of the map and the API object
+    will create a csv file in data folder containing the map

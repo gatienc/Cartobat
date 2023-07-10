@@ -5,6 +5,7 @@ theme:
 nav:
     - Home: index.md
     - Data Gathering: Data_Gathering.md
+    - Data Loading: Data_Loading.md
     - Data Pre-Processing: Data_Pre-Processing.md
 plugins:
   - plotly
