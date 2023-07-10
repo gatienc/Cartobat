@@ -23,32 +23,56 @@ Clean the data by removing the rows that are duplicated
 
 ## Filtering
 
-The raw rssi data comes in the form of :
-
-| timestamp                        | macModule    | rssi |
-| -------------------------------- | ------------ | ---  |
-| 2023-06-22 09:30:32.833000+02:00 | A8032A311F96 | -76  |
-| 2023-06-22 09:30:27.755000+02:00 | A8032A311F6A | -70  |
-| 2023-06-22 09:30:27.755000+02:00 | A8032A30FB9E | -70  |
-| -------------------------------- | ------------ | ---  |
-| 2023-06-22 08:40:11.082000+02:00 | A8032A311F96 | -72  |
-| 2023-06-22 08:40:10.954000+02:00 | A8032A311F6A | -64  |
-| 2023-06-22 08:40:08.524000+02:00 | A8032A311F96 | -75  |
-
 The filtering process is done in 3 steps:
 
 1. __Isolate__ the data of each MacModule (algoritmic optimization non-include)
 2. __Sample__ the filtered data every "sampling time".
 3. __Apply__ a given __filter__ on the RSSI values (mean average, high enveloppe, Kalman filter)
 
+[detailed explanation of the Preprocessing workflow](Detailed-Pre-processing.md)
+
 
 The current filtering method implemented are:
 
 ---
 
-### `MovingAverageFilter:`
+### `moving_average_Filter:`
 
-Apply a mean average filter on the RSSI values.
+
+Apply a moving average filter on the data
+
+For more information about the moving average filter, see the [Wikipedia page](https://en.wikipedia.org/wiki/Moving_average)
 
 **Parameters:**
 
+    window: Size of the window used for the moving average filter (in delay)
+    
+```plotly
+{"file_path": "./plotly/moving_average.json"}
+```
+
+### `moving_max_Filter:`
+
+Apply a moving max filter on the data, similar to the moving average filter but using the max value instead of the mean
+
+
+**Parameters:**
+
+    window: Size of the window used for the moving average filter (in delay)
+
+    
+```plotly
+{"file_path": "./plotly/moving_max.json"}
+```
+
+### `moving_max_average_Filter:`
+
+Apply a moving max average filter on the data, the filter first apply a moving max filter and then a moving average filter on the data, it allows to smooth the data while keeping the max value. It gives a satisfaisant high enveloppe of the data.
+
+**Parameters:**
+
+    window: Size of the window used for the moving average filter (in delay)
+
+```plotly
+{"file_path": "./plotly/moving_max_averaged.json"}
+```

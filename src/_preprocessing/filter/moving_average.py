@@ -5,7 +5,7 @@ logger = logging.getLogger('cartobat')
 
 class moving_average_Filter(abstractFilter):
     """
-    Max filtering the data
+    Apply a moving average filter on the data
     
     Args:
         window : Size of the moving window
