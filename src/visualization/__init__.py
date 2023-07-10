@@ -1,1 +1,1 @@
-from .._visualization.filter_comparison import filtering_comparator
+from .._visualization.graph.filter_comparison import filtering_comparator
