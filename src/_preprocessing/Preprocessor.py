@@ -78,7 +78,7 @@ class Preprocessor:
                 row=row.transpose()
                 delay=row['timestamp']-previous_time
                 if (delay>100*self.sampling_time):
-                    filtered_df=self._add_row(filtered_df,self.sampling(self.filter(segment)))#type: ignore
+                    filtered_df=self._add_row(filtered_df,self.filter(self.sampling(segment)))#type: ignore
                     segment=empty_df.copy()
                 else:
                     test=pd.DataFrame(row).transpose()
@@ -86,7 +86,7 @@ class Preprocessor:
 
                 previous_time=row['timestamp']
 
-            if not segment.empty : filtered_df=filtered_df=self._add_row(filtered_df,self.sampling(self.filter(segment)))
+            if not segment.empty : filtered_df=filtered_df=self._add_row(filtered_df,(self.filter(self.sampling(segment))))
 
         #sort by timestamp the filtered_df
         filtered_df=filtered_df.sort_values('timestamp',ascending=True,ignore_index=True ) # type: ignore
