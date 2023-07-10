@@ -19,12 +19,15 @@ class Preprocessor:
     
     """
     def __init__(self,rssi_df,*, sampling_time=None) -> None:
-        self.rssi_df=rssi_df
+        self.rssi_df=rssi_df.copy()
         self.filter=None
         self.cleaner=None
         self.sampling_time= timedelta(seconds=sampling_time) if sampling_time!=None else timedelta(seconds=0.5)#0.5 seconds window by default
 
     def sampling(self,rssi_df):
+        """
+        Sample the current rssi_df , you must provide a sorted rssi_df by timestamp with data of only one mac_module
+        """
         #data must be sorted by timestamp
         sampling_time=self.sampling_time
         min_time=min(rssi_df['timestamp']).round(freq='500L')-sampling_time#round to inferior
@@ -38,6 +41,7 @@ class Preprocessor:
             signal_intensity=np.nan#certainly not the best way to do it
             while count< len(rssi_df) and i>rssi_df['timestamp'].iloc[count]:
                 signal_intensity=max(rssi_df['rssi'].iloc[count],signal_intensity)
+                logger.debug(f'{signal_intensity=}')
                 count+=1
             sampled_df=self._add_row(sampled_df,pd.DataFrame({'timestamp':i,'rssi':signal_intensity,'macModule':mac_module},index=[0]))
         return sampled_df
@@ -52,6 +56,14 @@ class Preprocessor:
         df=pd.concat([df,row],ignore_index=True)
         return df
     def __segmenting(self,rssi_df):
+        """
+        Segment the rssi_df by mac_module and timestamp
+        args:
+            rssi_df: dataframe containing the data to segment
+            
+        
+        
+        """
         #must clean this : use add_row
 
         mac_module_list=rssi_df['macModule'].unique()
@@ -66,7 +78,7 @@ class Preprocessor:
                 row=row.transpose()
                 delay=row['timestamp']-previous_time
                 if (delay>100*self.sampling_time):
-                    filtered_df=pd.concat([filtered_df,self.filter(segment)])#type: ignore
+                    filtered_df=self._add_row(filtered_df,self.sampling(self.filter(segment)))#type: ignore
                     segment=empty_df.copy()
                 else:
                     test=pd.DataFrame(row).transpose()
@@ -74,10 +86,10 @@ class Preprocessor:
 
                 previous_time=row['timestamp']
 
-            if not segment.empty : filtered_df=pd.concat([filtered_df,self.filter(segment)],ignore_index=True)
+            if not segment.empty : filtered_df=filtered_df=self._add_row(filtered_df,self.sampling(self.filter(segment)))
 
         #sort by timestamp the filtered_df
-        filtered_df=filtered_df.sort_values('timestamp',ascending=True ) # type: ignore
+        filtered_df=filtered_df.sort_values('timestamp',ascending=True,ignore_index=True ) # type: ignore
         return(filtered_df)
     def process(self)->'pd.DataFrame':
         if not issubclass(type(self.cleaner), abstractCleaner):
@@ -87,18 +99,12 @@ class Preprocessor:
         #algorithm could be optimized by sorting the dataframe only once
         rssi_df=self.rssi_df
         logger.info('data Cleaning')
-        logger.debug(f'{rssi_df=}')
         rssi_df=self.cleaner(rssi_df) # type: ignore
         logger.info('cleaned, sorting')
-        logger.debug(f'{rssi_df=}')
-        rssi_df=rssi_df.sort_values('timestamp',ascending=True )
-        logger.info('sorted, sampling')
-        logger.debug(f'{rssi_df=}')
-        rssi_df=self.sampling(rssi_df)
-        logger.info('sampled,filtering')
-        logger.debug(f'{rssi_df=}')
+        rssi_df=rssi_df.sort_values('timestamp',ascending=True,ignore_index=True )
+        logger.info('sorted, filtering')
         filtered_df=self.__segmenting(rssi_df)
+        
         logger.info('filtered')
-        logger.debug(f'{rssi_df=}')
         
         return filtered_df

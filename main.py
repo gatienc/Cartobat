@@ -36,13 +36,12 @@ if __name__ == "__main__":
                 for index,filter in enumerate(filter_list):
                         data=preprocessor.set_filter(filter).process()
                         fig=add_line_plot(data,fig, 'macModule', mac_module_id, 'timestamp', 'rssi', name_list[index])
-                        if name_list[index] =="moving_max_averaged_Filter":
-                                print(f'{data=}')
+
                 if show: fig.show()
                 return fig
         #3 seconces time delta
         timedelta=pd.Timedelta(seconds=20)
-        filter_list=[blank_Filter()]#,moving_average_Filter(timedelta),moving_max_Filter(timedelta),moving_max_averaged_Filter(timedelta)
+        filter_list=[moving_average_Filter(timedelta),moving_max_Filter(timedelta),moving_max_averaged_Filter(timedelta)]
         
         filtering_comparator(preprocessor.set_cleaner(remove_duplicates_Cleaner()) ,filter_list,'A8032A311F6A',show=True)
         
