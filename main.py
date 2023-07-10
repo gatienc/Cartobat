@@ -17,21 +17,19 @@ if __name__ == "__main__":
         #API call
         callApi=API()
         start="2023-06-22 11:34:00.000000"
-        end="2023-06-22 11:36:35.000000"
+        end="2023-06-22 11:50:35.000000"
         raw_data=callApi.getRawDataForCartoWear('C77C2F92664E',pd.to_datetime(start),pd.to_datetime(end))
+        print(raw_data)
 
         #Preprocessing
-        preprocessor=Preprocessor(raw_data,sampling_time=3)
-        timedelta=pd.Timedelta(seconds=20)
-        filter_list=[moving_max_Filter(timedelta)]#,,moving_max_averaged_Filter(timedelta)]
-        fig=filtering_comparator(preprocessor.set_cleaner(remove_duplicates_Cleaner()) ,filter_list,'A8032A311F6A',show=True)
+        sampling_time=0.5
+        filter_window='2S'
+        preprocessor=Preprocessor(raw_data,sampling_time=sampling_time)
+        rssi_df=preprocessor.set_cleaner(remove_duplicates_Cleaner())\
+                .set_filter(moving_max_averaged_Filter(filter_window))\
+                .process()
+        rssi_df.to_csv("data/data.csv")
 
-        # callApi=API()
-        # MapDataPath="data/cartePalaiseau.csv"
-
-        # map_gdf=gdfLoader(MapDataPath)
-        # print(map_gdf.head(),file=open("test.txt","w"))
-        
         
         
 

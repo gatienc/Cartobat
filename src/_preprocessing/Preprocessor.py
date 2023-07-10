@@ -12,9 +12,10 @@ class Preprocessor:
     Preprocessor class, used to preprocess the data
     set you're cleaner and filter (with set_cleaner and set_filter),
     before calling process()
+    
     args:
         rssi_df: dataframe containing the data to preprocess
-        sampling_time: time between each sample, if None, base sampling is 0.5 seconds
+        sampling_time: number of seconds between each sample, can be float, if None, base sampling is 0.5 seconds
     
     
     """
@@ -41,9 +42,9 @@ class Preprocessor:
             signal_intensity=np.nan#certainly not the best way to do it
             while count< len(rssi_df) and i>rssi_df['timestamp'].iloc[count]:
                 signal_intensity=max(rssi_df['rssi'].iloc[count],signal_intensity)
-                logger.debug(f'{signal_intensity=}')
                 count+=1
             sampled_df=self._add_row(sampled_df,pd.DataFrame({'timestamp':i,'rssi':signal_intensity,'macModule':mac_module},index=[0]))
+            sampled_df=sampled_df.dropna()
         return sampled_df
     def set_cleaner(self,cleaner)->'Preprocessor':
         self.cleaner=cleaner
@@ -59,12 +60,8 @@ class Preprocessor:
         """
         Segment the rssi_df by mac_module and timestamp
         args:
-            rssi_df: dataframe containing the data to segment
-            
-        
-        
+            rssi_df: dataframe containing the data to segments
         """
-        #must clean this : use add_row
 
         mac_module_list=rssi_df['macModule'].unique()
         empty_df = pd.DataFrame(columns=rssi_df.columns)
@@ -75,18 +72,22 @@ class Preprocessor:
             segment=empty_df.copy()
             previous_time=mac_module_rssi.iloc[0]['timestamp']
             for index,row in mac_module_rssi.iterrows():
+
                 row=row.transpose()
                 delay=row['timestamp']-previous_time
-                if (delay>100*self.sampling_time):
+
+                if (delay> 100*self.sampling_time):
                     filtered_df=self._add_row(filtered_df,self.filter(self.sampling(segment)))#type: ignore
                     segment=empty_df.copy()
                 else:
-                    test=pd.DataFrame(row).transpose()
-                    segment=pd.concat([segment,test],ignore_index=True)#type: ignore
-
+                    
+                    temp=pd.DataFrame(row).transpose()
+                    segment=self._add_row(segment,temp)
                 previous_time=row['timestamp']
+                
+            
+            if not segment.empty : filtered_df=self._add_row(filtered_df,(self.filter(self.sampling(segment))))
 
-            if not segment.empty : filtered_df=filtered_df=self._add_row(filtered_df,(self.filter(self.sampling(segment))))
 
         #sort by timestamp the filtered_df
         filtered_df=filtered_df.sort_values('timestamp',ascending=True,ignore_index=True ) # type: ignore
