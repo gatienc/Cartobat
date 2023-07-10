@@ -7,6 +7,7 @@ nav:
     - Data Gathering: Data_Gathering.md
     - Data Loading: Data_Loading.md
     - Data Pre-Processing: Data_Pre-Processing.md
+    - Data Visualization: Data_Visualization.md
 plugins:
   - plotly
 

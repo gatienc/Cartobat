@@ -28,6 +28,13 @@ def filtering_comparator(preprocessor:Preprocessor,filter_list:list,mac_module_i
         '''
         This function is used to compare the effect of different filters on the same data
         cleaner must have been set before calling this function
+        
+        Args:
+            preprocessor (Preprocessor): The preprocessor to use (cleaner must have been set)
+            filter_list (list): The list of filters to compare
+            mac_module_id (str): The mac module id to plot
+            show (bool, optional): If true show the plot. Defaults to False.
+            name_list (list, optional): The list of names to use for the filters. Defaults to None.
         '''
         #tricks to get the name of the filters
         if name_list is None:
