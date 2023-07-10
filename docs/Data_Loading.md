@@ -54,7 +54,13 @@ Create a GeoDataFrame from a csv file with coordinates of point in column:coordo
 add a geometry column with the coordinates and transfer it to latitude / longitude
 
 
-output:
+**Parameters:**
+
+- ModuleMapPath: str
+the path to the csv file
+
+
+output: GeoDataFrame intial_csv_column+['geometry']
 
 |   macModule   |      geometry       |
 |--------------|---------------------|
@@ -66,18 +72,26 @@ output:
 | C45BBE37B346 | POINT (2.20087 48.71315) |
 
   
-**Parameters**
-----------
-*Input:* _ModuleMapPath: str
-the path to the csv file
-
--------
-*Output:* GeoDataFrame
-    csvcolumn+['geometry']
 
 
-### gdfLoader
+
+### `gdfLoader`
 
 Create a GeoDataFrame from a csv file with coordinates of point in a column
 add a geometry column with the coordinates
-    
+
+**Parameters:**
+
+- dataPath: str the path to the csv file
+- positionColumn: str position column name initial="coordinates"
+- dropPositionColumn: bool if true drop the column with the coordinates
+
+output:
+
+| ID_element |  nom  |                geometry                |
+|------------|-------|---------------------------------------|
+|    21205   | 4A101 | POLYGON ((2.19977 48.71281, 2.19979 48.71287, ... |
+|    21264   | 4A413 | POLYGON ((2.20045 48.71307, 2.20046 48.71311, ... |
+|    21265   | 4A409 | POLYGON ((2.20043 48.71301, 2.20044 48.71304, ... |
+|    21266   |       | POLYGON ((2.20050 48.71315, 2.20055 48.71315, ... |
+|    21267   |       | POLYGON ((2.20055 48.71317, 2.20059 48.71316, ... |
