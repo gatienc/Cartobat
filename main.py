@@ -12,7 +12,7 @@ from src.visualization import filtering_comparator,MapCreation
 import plotly.graph_objects as go
 
 
-from src.DataLoader import ReadMarkerMap,gdfLoader
+from src.DataLoader import MarkerLoader,gdfLoader
 if __name__ == "__main__":
         #API call
         callApi=API()

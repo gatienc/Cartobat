@@ -39,7 +39,7 @@ def gdfLoader(dataPath:str,positionColumn:str ="coordinates",dropPositionColumn:
 
     return gdf
 
-def ReadMarkerMap(ModuleMapPath):
+def MarkerLoader(ModuleMapPath):
     """
     Create a GeoDataFrame from a csv file with coordinates of point in column:coordonneesEPSG3857
     add a geometry column with the coordinates and transfer it to lat/lon

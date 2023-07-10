@@ -119,7 +119,7 @@ class API:
                     writer.writeheader()
                     for row in result:
                         writer.writerow(row)
-            return self.__toTimestampedDataFrame(result,toLocal=True)
+            return self.__toTimestampedDataFrame(result,toLocal=False)
 
     def getBuilding(self)->list:
         """

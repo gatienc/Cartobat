@@ -48,17 +48,15 @@ data at this format:
 
 ## Dynamic data
 
-### `ReadMarkerMap`
+### `MarkerLoader`
 
 Create a GeoDataFrame from a csv file with coordinates of point in column:coordonneesEPSG3857
 add a geometry column with the coordinates and transfer it to latitude / longitude
-
 
 **Parameters:**
 
 - ModuleMapPath: str
 the path to the csv file
-
 
 output: GeoDataFrame intial_csv_column+['geometry']
 
@@ -70,10 +68,6 @@ output: GeoDataFrame intial_csv_column+['geometry']
 | A8032A311FAA | POINT (2.20072 48.71317) |
 | C45BBE39F56A | POINT (2.20117 48.71318) |
 | C45BBE37B346 | POINT (2.20087 48.71315) |
-
-  
-
-
 
 ### `gdfLoader`
 
