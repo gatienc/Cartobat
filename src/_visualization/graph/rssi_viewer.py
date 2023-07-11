@@ -13,3 +13,4 @@ def rssi_viewer(rssi_df):
     for mac_module_id in rssi_df['macModule'].unique():
         fig=add_line_plot(rssi_df,fig, 'macModule', mac_module_id, 'timestamp', 'rssi', mac_module_id)
     fig.show()
+    return fig

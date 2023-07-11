@@ -28,8 +28,10 @@ This function is used to visualize the rssi data of every mac_module in the rssi
 
 **Parameters:**
 
-  
 - rssi_df (pandas.dataframe ): The rssi_df to visualize
 
+```plotly
+{"file_path": "./plotly/rssi_viewer.json"}
+```
 
 ## map viz
