@@ -21,10 +21,8 @@ class moving_average_Filter(abstractFilter):
       self.window = window
     def filter(self, rssi_df):
         #mean average filtering of rssi_df using the window size on the column rssi
-        logger.debug(f'{rssi_df=}')
 
         rssi_df['rssi']=rssi_df.rolling(self.window,center=True,min_periods=1,closed='both',on='timestamp').rssi.mean().round(1)#round to 1 decimal (could be changed)
-        logger.debug(f'{rssi_df=}')
 
         return rssi_df
     

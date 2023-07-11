@@ -22,4 +22,14 @@ mac_module_id (str): The mac module id to plot
 
 ---
 
+`rssi_viewer`
+
+This function is used to visualize the rssi data of every mac_module in the rssi_df
+
+**Parameters:**
+
+  
+- rssi_df (pandas.dataframe ): The rssi_df to visualize
+
+
 ## map viz

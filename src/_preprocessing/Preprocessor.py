@@ -40,6 +40,7 @@ class Preprocessor:
 
         for i in time_range:
             signal_intensity=np.nan#certainly not the best way to do it
+
             while count< len(rssi_df) and i>rssi_df['timestamp'].iloc[count]:
                 signal_intensity=max(rssi_df['rssi'].iloc[count],signal_intensity)
                 count+=1
