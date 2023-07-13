@@ -120,6 +120,9 @@ class API:
                     for row in result:
                         writer.writerow(row)
             return self.__toTimestampedDataFrame(result,toLocal=False)
+        else :
+            raise ConnectionError('No data found for the given parameters, got : '+str(data)) 
+            
 
     def getBuilding(self)->list:
         """

@@ -19,6 +19,8 @@ Then the data is segmented :
    For each MacModule, we're creating a 'segment' dataframe containing only the data of the MacModule and without too much time gap between each data point. (gap < 100*sampling time),  this 'segment' dataframe is then sampled every 'sampling time'.
    
    The sample takes the max received signal intensity during the time interval between two sample.
+
+   when no data is received during the time interval, the sample is set to NaN. this i san infotmation ! no data is received during this time interval. it will be smoothed by the filter later.
    
    Then, the segment is filtered using the filter provided by set_filter().
 

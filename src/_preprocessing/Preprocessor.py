@@ -45,7 +45,6 @@ class Preprocessor:
                 signal_intensity=max(rssi_df['rssi'].iloc[count],signal_intensity)
                 count+=1
             sampled_df=self._add_row(sampled_df,pd.DataFrame({'timestamp':i,'rssi':signal_intensity,'macModule':mac_module},index=[0]))
-            sampled_df=sampled_df.dropna()
         return sampled_df
     def set_cleaner(self,cleaner)->'Preprocessor':
         self.cleaner=cleaner
