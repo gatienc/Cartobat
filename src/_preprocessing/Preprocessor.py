@@ -71,18 +71,22 @@ class Preprocessor:
             mac_module_rssi=rssi_df[rssi_df['macModule']==mac_module]
             segment=empty_df.copy()
             previous_time=mac_module_rssi.iloc[0]['timestamp']
+
             for index,row in mac_module_rssi.iterrows():
 
                 row=row.transpose()
                 delay=row['timestamp']-previous_time
-
+                
                 if (delay> 100*self.sampling_time):
+                    print(f'{mac_module_rssi=}')
+                    print(f'{delay=}')
+                    print(f'{segment=}')
                     filtered_df=self._add_row(filtered_df,self.filter(self.sampling(segment)))#type: ignore
                     segment=empty_df.copy()
-                else:
-                    
-                    temp=pd.DataFrame(row).transpose()
-                    segment=self._add_row(segment,temp)
+                
+                temp=pd.DataFrame(row).transpose()
+                segment=self._add_row(segment,temp)
+                
                 previous_time=row['timestamp']
                 
             

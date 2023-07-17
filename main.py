@@ -27,8 +27,7 @@ if __name__ == "__main__":
         rssi_df=preprocessor.set_cleaner(remove_duplicates_Cleaner())\
                 .set_filter(moving_max_averaged_Filter(filter_window))\
                 .process()
-        fig=filtering_comparator()
-        
+        print(rssi_df)        
         
 
         
