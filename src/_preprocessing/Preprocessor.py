@@ -78,9 +78,7 @@ class Preprocessor:
                 delay=row['timestamp']-previous_time
                 
                 if (delay> 100*self.sampling_time):
-                    print(f'{mac_module_rssi=}')
-                    print(f'{delay=}')
-                    print(f'{segment=}')
+
                     filtered_df=self._add_row(filtered_df,self.filter(self.sampling(segment)))#type: ignore
                     segment=empty_df.copy()
                 
@@ -96,20 +94,43 @@ class Preprocessor:
         #sort by timestamp the filtered_df
         filtered_df=filtered_df.sort_values('timestamp',ascending=True,ignore_index=True ) # type: ignore
         return(filtered_df)
-    def process(self)->'pd.DataFrame':
+    def cleaning(self):
+        """
+        Clean the rssi_df using the cleaner function
+        """
         if not issubclass(type(self.cleaner), abstractCleaner):
             raise TypeError("Cleaner is not set, please use set_cleaner(cleaner:function)")
+        logger.info('data Cleaning')
+        self.rssi_df=self.cleaner(self.rssi_df)
+        return self
+    def filtering(self):
+        """
+        Filter the rssi_df using the filter function
+        Must be called after cleaning
+        """
         if not issubclass(type(self.filter), abstractFilter):
             raise TypeError("Filter is not set, please use set_filter(filter:function)")
-        #algorithm could be optimized by sorting the dataframe only once
-        rssi_df=self.rssi_df
-        logger.info('data Cleaning')
-        rssi_df=self.cleaner(rssi_df) # type: ignore
-        logger.info('cleaned, sorting')
-        rssi_df=rssi_df.sort_values('timestamp',ascending=True,ignore_index=True )
-        logger.info('sorted, filtering')
+        
+        rssi_df=self.rssi_df.sort_values('timestamp',ascending=True,ignore_index=True )
         filtered_df=self.__segmenting(rssi_df)
-        
-        logger.info('filtered')
-        
         return filtered_df
+    def get_df(self)->'pd.DataFrame':
+        '''The function `get_df` returns the `rssi_df` attribute of the object.
+        
+        Returns
+        -------
+            the variable `self.rssi_df`, which is expected to be a pandas DataFrame.
+        
+        '''
+        
+        return self.rssi_df
+        
+        
+    def process(self)->'pd.DataFrame':
+        """
+        Process the data, must be called after setting the cleaner and the filter
+        Depreciated, use clean() and filter() instead
+        """
+        self.cleaning()
+        return self.filtering()
+
