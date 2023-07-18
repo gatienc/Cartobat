@@ -6,43 +6,45 @@ import geopandas as gpd
 import numpy as np
 
 
-def RawDataFeatures(MarkerDictList,timestamp_list,MacModuleLocation,cmap=None):
+def RawDataFeatures(rssi_df,MacModuleLocation,cmap=None):
+    """
+    fonctionne mais la barre de progression affiche des points chaque fois qu'ils sont mis , s'il y a un trou de 10h à 13h , cela va passer le trou plutout que de ne rien afficher
+
+    Parameters
+    -------
+    MacModuleLocation : dict {macModule_id=[lon,lat]}
+    """
     if cmap is None:
         cmap = mpl.colormaps['jet'].resampled(30)
         cmap = mpl.colors.ListedColormap(cmap(np.linspace(0, 1, 30)))
-    input_format = '%Y-%m-%d %H:%M:%S.%f'
-    output_format = '%Y-%m-%dT%H:%M:%S'
-    pointList=[]
-    MarkerTimestamplist=[]
-    rssiList=[]
-    for index,timestamp in enumerate(timestamp_list):
-        dt = datetime.strptime(str(timestamp), input_format)
-        new_timestamp = dt.strftime(output_format)
-        for MarkerDict in MarkerDictList[index]:
-                point=MacModuleLocation[MarkerDict]
-                pointList.append([point.x,point.y])
-                MarkerTimestamplist.append(new_timestamp)
-                rssiList.append(MarkerDictList[index][MarkerDict])
+    
 
+    
     features = []
-    for index in range(len(pointList)):
-        rgb_list=cmap(rssiList[index]+80)
-        hex_color=mcolors.rgb2hex(rgb_list)
+    for index,row in rssi_df.iterrows():
+        
+        timestamp=row["timestamp"].strftime('%Y-%m-%dT%H:%M:%S')
+
+        
+        coordinates=MacModuleLocation[row["macModule"]]
+        
+        color=cmap(row['rssi']+80)
+        hex_color=mcolors.rgb2hex(color)
         feature = {
             'type': 'Feature',
             'geometry': {
                 'type': 'Point',
-                'coordinates': pointList[index]
+                'coordinates': [coordinates.x,coordinates.y]
             },
             'properties': {
-                'times': [MarkerTimestamplist[index]],
+                'times': [timestamp],
                 "icon": 'circle',
-                "popup": str(rssiList[index]),
+                "popup": str(row['rssi']),
                 "iconstyle": {
                     # "color": hex_color,
                     "fillColor": hex_color,    
                     "fillOpacity": "0.8",  
-                    "radius": str(1*(100+rssiList[index]))            
+                    "radius": str(1*(100+row['rssi']))            
                 }}
             }
         features.append(feature)
