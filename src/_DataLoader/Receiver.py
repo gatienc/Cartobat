@@ -4,6 +4,6 @@ from .Room import Room
 
 @dataclass
 class Receiver:
-    uid: str
+    uid: int
     room : Room
     point : Point
