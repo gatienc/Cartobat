@@ -89,3 +89,71 @@ output:
 |    21265   | 4A409 | POLYGON ((2.20043 48.71301, 2.20044 48.71304, ... |
 |    21266   |       | POLYGON ((2.20050 48.71315, 2.20055 48.71315, ... |
 |    21267   |       | POLYGON ((2.20055 48.71317, 2.20059 48.71316, ... |
+
+### `Receiver`
+A class representing a receiver/Mac module in a room. This class has been tought to be the element of a set with mac module id as key.
+
+**Attributes**:
+-----------
+room : Room
+    The room in which the receiver is located.
+point : Point
+    The point in the room where the receiver is located.
+### `build_receiver_set`
+
+This function takes a GeoDataFrame of receivers and a list of rooms, and returns a dictionary of the form {macModule: Receiver(room_polygon, receiver_localisation)}.
+
+**Parameters**:
+-----------
+receiver_gdf : GeoDataFrame
+    A GeoDataFrame of receivers.
+room_list : list
+    A list of rooms.
+
+**Returns**:
+--------
+dict
+    A dictionary of the form {macModule: Receiver(room_polygon, receiver_localisation)}.
+
+
+### `Room`
+
+A class representing a room in a building.
+
+**Attributes**:
+-----------
+uid : int
+    The unique identifier of the room.
+name : Optional[str]
+    The name of the room (optional).
+polygon : Polygon
+    The polygon representing the shape of the room.
+
+### `room_list_generator`
+
+Generate a list of Room objects from a GeoDataFrame containing room information.
+
+**Parameters**
+----------
+Input:
+map_gdf: GeoDataFrame
+    A GeoDataFrame containing room information.
+
+-------
+**Output**:
+list
+    A list of Room objects.
+
+### `room_r_tree_generator`
+Generate an R-tree index from a list of Room objects.
+
+**Parameters**
+----------
+Input:
+room_list: list
+    A list of Room objects.
+
+-------
+**Output**:
+rtree.index.Index
+    An R-tree index containing the Room objects.
