@@ -2,6 +2,7 @@ import geopandas as gpd
 from shapely.geometry import Point,Polygon
 import ast
 import pandas as pd
+from . import Receiver
 
 def gdfLoader(dataPath:str,positionColumn:str ="coordinates",dropPositionColumn:bool =True)->gpd.GeoDataFrame:
     """

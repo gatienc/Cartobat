@@ -4,6 +4,5 @@ from .Room import Room
 
 @dataclass
 class Receiver:
-    uid: int
     room : Room
     point : Point
