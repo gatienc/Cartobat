@@ -40,7 +40,7 @@ def gdfLoader(dataPath:str,positionColumn:str ="coordinates",dropPositionColumn:
 
     return gdf
 
-def MarkerLoader(ModuleMapPath):
+def ReceiverLoader(ModuleMapPath):
     """
     Create a GeoDataFrame from a csv file with coordinates of point in column:coordonneesEPSG3857
     add a geometry column with the coordinates and transfer it to lat/lon
@@ -57,18 +57,18 @@ def MarkerLoader(ModuleMapPath):
         csvcolumn+['geometry']
     """
     #load the receiver map for selected map and layer
-    marker_gdf = gpd.read_file(ModuleMapPath)
+    receiver_gdf = gpd.read_file(ModuleMapPath)
     #transform the str defining the list in column coordonneesEPSG3857 into a python list
-    marker_gdf["coordonneesEPSG3857"] = marker_gdf["coordonneesEPSG3857"].apply(ast.literal_eval)
+    receiver_gdf["coordonneesEPSG3857"] = receiver_gdf["coordonneesEPSG3857"].apply(ast.literal_eval)
     #transform the list of coordinates into points in geometry column
-    marker_gdf["geometry"] = marker_gdf["coordonneesEPSG3857"].apply(lambda coords: Point(coords))
+    receiver_gdf["geometry"] = receiver_gdf["coordonneesEPSG3857"].apply(lambda coords: Point(coords))
     #drop the column coordonneesEPSG3857 and the layer id
-    marker_gdf = marker_gdf.drop(columns=["coordonneesEPSG3857","idCouche"])
+    receiver_gdf = receiver_gdf.drop(columns=["coordonneesEPSG3857","idCouche"])
     #set the crs
-    marker_gdf=marker_gdf.set_crs(crs="epsg:3857", allow_override=True)
+    receiver_gdf=receiver_gdf.set_crs(crs="epsg:3857", allow_override=True)
     # change the projection to lat/lon
-    marker_gdf=marker_gdf.to_crs(epsg=4326)
-    return marker_gdf
+    receiver_gdf=receiver_gdf.to_crs(epsg=4326)
+    return receiver_gdf
 
 # Deprecated
 # Should call API instead of loading from file

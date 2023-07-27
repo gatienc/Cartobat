@@ -48,7 +48,7 @@ data at this format:
 
 ## Dynamic data
 
-### `MarkerLoader`
+### `ReceiverLoader`
 
 Create a GeoDataFrame from a csv file with coordinates of point in column:coordonneesEPSG3857
 add a geometry column with the coordinates and transfer it to latitude / longitude
