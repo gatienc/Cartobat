@@ -16,16 +16,20 @@ def build_receiver_set(receiver_gdf,room_list,room_rtree):
     dict
         A dictionary of the form {macModule: Receiver(room_polygon, receiver_localisation)}.
     """
-    ## could be optimised by using a dictionary instead of a list of rooms ( will be faster)
 
+    #nearest neigbor seems risky, the cartography must be perfect
     res={}
     for index,row in receiver_gdf.iterrows():
         receiver_localisation=row["geometry"]
-        for i in room_rtree.intersection(receiver_localisation.bounds):     
-            receiver_room=[room for room in room_list if room.uid == i]
-            if len(receiver_room)>1:
-                raise ValueError(f"Macmodule in Multiple room error:\n macmodule:{row['macModule']}\n receiver_localisation:{receiver_localisation}\n receiver_room:{receiver_room}")
-            else:
-                receiver_room=receiver_room[0]
-                res[row["macModule"]]=Receiver(receiver_room,receiver_localisation)
+        nearest_room_iterator=room_rtree.nearest(receiver_localisation.bounds,5)
+        receiver_room_uid=next(nearest_room_iterator)
+        receiver_room = next((r for r in room_list if r.uid == receiver_room_uid), None)
+        counter=1
+        while not receiver_room.polygon.contains(receiver_localisation):
+            if counter >= 5:
+                raise Exception("The receiver "+row["macModule"]+" is not in any room.")
+            receiver_room_uid=next(nearest_room_iterator)
+            receiver_room = next((r for r in room_list if r.uid == receiver_room_uid), None)
+            counter+=1
+        res[row["macModule"]]=Receiver(receiver_room,receiver_localisation)
     return(res)
