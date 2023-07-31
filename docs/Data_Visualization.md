@@ -1,6 +1,5 @@
 # Vizualisation Documentation
 
-
 ## graph viz
 
 `filtering_comparator`
@@ -12,7 +11,7 @@ cleaner must have been set before calling this function
 
 - preprocessor (Preprocessor): The preprocessor to use (cleaner must have been set)
 - filter_list (list): The list of filters to compare
-mac_module_id (str): The mac module id to plot
+  mac_module_id (str): The mac module id to plot
 - show (bool, optional): If true show the plot. Defaults to False.
 - name_list (list, optional): The list of names to use for the filters. Defaults to None.
 
@@ -35,3 +34,38 @@ This function is used to visualize the rssi data of every mac_module in the rssi
 ```
 
 ## map viz
+
+`MapCreation`
+Generates a folium map object with a FeatureGroup for the receivers and a FeatureGroup for the rooms.
+
+Args:
+receiver_dict (dict): A dictionary containing the receivers.
+room_list (list): A list containing the rooms.
+
+Returns:
+map_object (folium.Map): A folium map object containing the FeatureGroups for the receivers and the rooms.
+
+`receiver_FeatureGroup`
+Creates a FeatureGroup for the receivers in the given dictionary.
+To change style, take a look here:
+https://leafletjs.com/reference.html#path
+
+Args:
+receiver_dict (dict): A dictionary containing the receivers.
+
+Returns:
+receiver_fg (folium.FeatureGroup): A FeatureGroup containing the receivers.
+
+`room_FeatureGroup`
+
+Creates a FeatureGroup for the rooms in the given list.
+To change style, take a look here:
+https://leafletjs.com/reference.html#path
+
+Args:
+room_list (list): A list containing the rooms.
+
+Returns:
+room_fg (folium.FeatureGroup): A FeatureGroup containing the rooms.
+lat_avg (float): The average latitude of the rooms.
+lon_avg (float): The average longitude of the rooms.
