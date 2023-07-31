@@ -1,6 +1,94 @@
 import geopandas as gpd
 import folium
 
+from multipledispatch import dispatch
+
+def room_FeatureGroup(room_list:list)->folium.FeatureGroup:
+    """
+    Creates a FeatureGroup for the rooms in the given list.
+    To change style, take a look here:
+    https://leafletjs.com/reference.html#path
+
+    Args:
+    room_list (list): A list containing the rooms.
+
+    Returns:
+    room_fg (folium.FeatureGroup): A FeatureGroup containing the rooms.
+    lat_avg (float): The average latitude of the rooms.
+    lon_avg (float): The average longitude of the rooms.
+    """
+    room_fg = folium.FeatureGroup(name='Room')
+        
+    lat_sum,lon_sum=0,0
+    for room in room_list:
+        center=room.polygon.centroid
+        lon,lat=center.x,center.y
+        lat_sum+=lat
+        lon_sum+=lon
+        polygon_list=[(lat,long) for long,lat in list(room.polygon.exterior.coords)]
+
+        room_fg.add_child(
+            folium.Polygon(
+                locations=polygon_list,
+                popup=(f'uid ={room.uid} name={room.name}'),#folium.Popup(text)
+                color= 'black',
+                fill_color='black',
+            )
+        )
+    lat_avg=lat_sum/len(room_list)
+    lon_avg=lon_sum/len(room_list)
+    return room_fg,lat_avg,lon_avg
+    
+
+def receiver_FeatureGroup(receiver_dict:dict)->folium.FeatureGroup:
+    """
+    Creates a FeatureGroup for the receivers in the given dictionary.
+    To change style, take a look here:
+    https://leafletjs.com/reference.html#path
+
+    Args:
+    receiver_dict (dict): A dictionary containing the receivers.
+
+    Returns:
+    receiver_fg (folium.FeatureGroup): A FeatureGroup containing the receivers.
+    """
+    receiver_fg = folium.FeatureGroup(name='Receiver')
+    for receiver_name, receiver in receiver_dict.items():
+        receiver_fg.add_child(
+            folium.CircleMarker(
+                [receiver.point.y,receiver.point.x],
+                radius=1,
+                color='red',
+                fill_color='red',
+                popup=(f'{receiver_name} in room :{receiver.room.uid}'),#folium.Popup(text)
+            )
+        )
+    return receiver_fg
+import folium
+@dispatch(dict,list)
+def MapCreation(receiver_dict:dict,room_list:list)->folium.Map:
+    """
+    Generates a folium map object with a FeatureGroup for the receivers and a FeatureGroup for the rooms.
+    
+
+    Args:
+    receiver_dict (dict): A dictionary containing the receivers.
+    room_list (list): A list containing the rooms.
+
+    Returns:
+    map_object (folium.Map): A folium map object containing the FeatureGroups for the receivers and the rooms.
+    """
+    receiver_fg=receiver_FeatureGroup(receiver_dict)
+    room_fg,lat_avg,lon_avg=room_FeatureGroup(room_list)
+    map_object = folium.Map(location = [lat_avg,lon_avg],max_zoom=30, zoom_start=20,crs="EPSG3857")
+
+    map_object.add_child(room_fg)
+    map_object.add_child(receiver_fg)
+    map_object.add_child(folium.LayerControl())
+
+    return map_object
+
+
 def MeanMarkerPosition(marker_gdf):
     long=[x for x in marker_gdf["geometry"].x]
     lat=[y for y in marker_gdf["geometry"].y]
@@ -9,7 +97,7 @@ def MeanMarkerPosition(marker_gdf):
     lat= sum(lat) / len(lat)
     location=[lat,long]
     return location
-
+@dispatch(gpd.GeoDataFrame)
 def MapCreation(map_gdf,**kwargs):
     if "marker_gdf" in kwargs:
         marker_gdf=kwargs["marker_gdf"]

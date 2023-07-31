@@ -1,6 +1,6 @@
 
 from .Receiver import Receiver
-def build_receiver_set(receiver_gdf,room_list,room_rtree):
+def build_receiver_dict(receiver_gdf,room_list,room_rtree):
     """
     This function takes a GeoDataFrame of receivers and a list of rooms, and returns a dictionary of the form {macModule: Receiver(room_polygon, receiver_localisation)}.
     
