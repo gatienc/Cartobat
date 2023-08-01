@@ -53,7 +53,6 @@ def receiver_FeatureGroup(receiver_dict:dict)->folium.FeatureGroup:
     """
     receiver_fg = folium.FeatureGroup(name='Receiver')
     for receiver_name, receiver in receiver_dict.items():
-        print(                [receiver.spherical_point.y,receiver.spherical_point.x],)
         receiver_fg.add_child(
             folium.CircleMarker(
                 [receiver.spherical_point.y,receiver.spherical_point.x],
