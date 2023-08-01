@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass,field
 from shapely.geometry import Point
 from .Room import Room
 
@@ -12,7 +12,13 @@ class Receiver:
     room : Room
         The room in which the receiver is located.
     point : Point
-        The point in the room where the receiver is located.
-    """
+    spherical_point : Point
+        The point in spherical coordinates (lat,long).
+    cartesian_polygon : Polygon
+        The polygon representing the shape of the room in cartesian coordinates.
+        projection used -> Equirectangular projection https://en.wikipedia.org/wiki/Equirectangular_projection
+
+        """
     room : Room
-    point : Point
+    spherical_point : Point
+    cartesian_point : Point

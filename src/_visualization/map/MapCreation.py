@@ -21,12 +21,11 @@ def room_FeatureGroup(room_list:list)->folium.FeatureGroup:
         
     lat_sum,lon_sum=0,0
     for room in room_list:
-        center=room.polygon.centroid
+        center=room.spherical_polygon.centroid
         lon,lat=center.x,center.y
         lat_sum+=lat
         lon_sum+=lon
-        polygon_list=[(lat,long) for long,lat in list(room.polygon.exterior.coords)]
-
+        polygon_list=[(lat,long) for long,lat in list(room.spherical_polygon.exterior.coords)]
         room_fg.add_child(
             folium.Polygon(
                 locations=polygon_list,
@@ -54,9 +53,10 @@ def receiver_FeatureGroup(receiver_dict:dict)->folium.FeatureGroup:
     """
     receiver_fg = folium.FeatureGroup(name='Receiver')
     for receiver_name, receiver in receiver_dict.items():
+        print(                [receiver.spherical_point.y,receiver.spherical_point.x],)
         receiver_fg.add_child(
             folium.CircleMarker(
-                [receiver.point.y,receiver.point.x],
+                [receiver.spherical_point.y,receiver.spherical_point.x],
                 radius=1,
                 color='red',
                 fill_color='red',

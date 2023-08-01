@@ -1,5 +1,6 @@
 from .Room import Room
 
+#TODO switch to use both coordinates system
 def room_list_generator(map_gdf):
     """
     Generate a list of Room objects from a GeoDataFrame containing room information.
@@ -18,7 +19,7 @@ def room_list_generator(map_gdf):
     room_list=[]
     for index,row in map_gdf.iterrows():
         uid=row["ID_element"]
-        room=Room(int(row["ID_element"]),row["nom"],row["geometry"])
+        room=Room(int(row["ID_element"]),row["nom"],row["geometry"],row["coordinatesEPSG3857"])
         room_list.append(room)
     return(room_list)
 
@@ -40,5 +41,5 @@ def room_r_tree_generator(room_list):
     import rtree
     idx = rtree.index.Index()
     for room in room_list:
-        idx.insert(room.uid, room.polygon.bounds)
+        idx.insert(room.uid, room.cartesian_polygon.bounds)
     return idx
