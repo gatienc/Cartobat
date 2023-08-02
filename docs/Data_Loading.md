@@ -46,9 +46,22 @@ data at this format:
 
 ### `ReceiverLoader`
 
-Create a GeoDataFrame from a csv file with coordinates of point in column:coordonneesEPSG3857
-add a geometry column with the coordinates and transfer it to latitude / longitude
+Create a GeoDataFrame from a csv file with coordinates of point
+column:geometry -> coordinates in lat/lon
+column:coordonneesEPSG3857 -> coordinates in EPSG3857
 
+Parameters
+
+---
+
+Input:
+ModuleMapPath: str
+the path to the csv file
+
+---
+
+Output:
+GeoDataFrame
 **Parameters:**
 
 - ModuleMapPath: str

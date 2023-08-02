@@ -7,9 +7,11 @@ from . import Receiver
 def gdfLoader(dataPath:str,positionColumn:str ="coordinates")->gpd.GeoDataFrame:
     """
     Create a GeoDataFrame from a csv file with coordinates of point in a column
-    add a geometry column with the coordinates
-    
     initial coordinates use mercator projection/ pseudo mercator projection crs: (EPSG:3857)
+
+    column:geometry -> coordinates in lat/lon
+    column:coordonneesEPSG3857 -> coordinates in EPSG3857
+    
      
     Parameters
     ----------
