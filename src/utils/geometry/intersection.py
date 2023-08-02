@@ -6,11 +6,11 @@ def intersection(polygon:shapely.geometry.Polygon,room_rtree:rtree.index.Index,r
     
     """
     #get the intersector with bounds of the polygon
-    intersected_room_iterator=list(room_rtree.intersection(polygon.exterior.bounds))
+    intersected_room=list(room_rtree.intersection(polygon.exterior.bounds))
     #verfify wich room really intersect with the polygon
     ## would be possible to directly intersect with the polygon here too
     really_intersected_room=[]
-    for receiver_room_uid in intersected_room_iterator:
+    for receiver_room_uid in intersected_room:
         receiver_room = room_dict[receiver_room_uid]
         intersect=shapely.intersection(polygon,receiver_room.cartesian_polygon)
         if not (intersect.is_empty):
