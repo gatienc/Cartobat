@@ -3,14 +3,14 @@ import folium
 
 from multipledispatch import dispatch
 
-def room_FeatureGroup(room_list:list)->folium.FeatureGroup:
+def room_FeatureGroup(room_dict:dict)->folium.FeatureGroup:
     """
-    Creates a FeatureGroup for the rooms in the given list.
+    Creates a FeatureGroup for the rooms in the given dict.
     To change style, take a look here:
     https://leafletjs.com/reference.html#path
 
     Args:
-    room_list (list): A list containing the rooms.
+    room_dict (dict): A dict containing the rooms.
 
     Returns:
     room_fg (folium.FeatureGroup): A FeatureGroup containing the rooms.
@@ -20,7 +20,7 @@ def room_FeatureGroup(room_list:list)->folium.FeatureGroup:
     room_fg = folium.FeatureGroup(name='Room')
         
     lat_sum,lon_sum=0,0
-    for room in room_list:
+    for room in room_dict.values():
         center=room.spherical_polygon.centroid
         lon,lat=center.x,center.y
         lat_sum+=lat
@@ -34,8 +34,8 @@ def room_FeatureGroup(room_list:list)->folium.FeatureGroup:
                 fill_color='black',
             )
         )
-    lat_avg=lat_sum/len(room_list)
-    lon_avg=lon_sum/len(room_list)
+    lat_avg=lat_sum/len(room_dict)
+    lon_avg=lon_sum/len(room_dict)
     return room_fg,lat_avg,lon_avg
     
 
@@ -64,21 +64,21 @@ def receiver_FeatureGroup(receiver_dict:dict)->folium.FeatureGroup:
         )
     return receiver_fg
 import folium
-@dispatch(dict,list)
-def MapCreation(receiver_dict:dict,room_list:list)->folium.Map:
+@dispatch(dict,dict)
+def MapCreation(receiver_dict:dict,room_dict:dict)->folium.Map:
     """
     Generates a folium map object with a FeatureGroup for the receivers and a FeatureGroup for the rooms.
     
 
     Args:
     receiver_dict (dict): A dictionary containing the receivers.
-    room_list (list): A list containing the rooms.
+    room_dict (dict): A dict containing the rooms.
 
     Returns:
     map_object (folium.Map): A folium map object containing the FeatureGroups for the receivers and the rooms.
     """
     receiver_fg=receiver_FeatureGroup(receiver_dict)
-    room_fg,lat_avg,lon_avg=room_FeatureGroup(room_list)
+    room_fg,lat_avg,lon_avg=room_FeatureGroup(room_dict)
     map_object = folium.Map(location = [lat_avg,lon_avg],max_zoom=30, zoom_start=20,crs="EPSG3857")
 
     map_object.add_child(room_fg)
@@ -97,7 +97,7 @@ def MeanMarkerPosition(marker_gdf):
     location=[lat,long]
     return location
 @dispatch(gpd.GeoDataFrame)
-def MapCreation(map_gdf,**kwargs):
+def MapCreation(map_gdf:gpd.GeoDataFrame,**kwargs):
     if "marker_gdf" in kwargs:
         marker_gdf=kwargs["marker_gdf"]
     if "marker_gdf" in kwargs and "location" not in kwargs:
