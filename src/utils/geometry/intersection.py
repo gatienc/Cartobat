@@ -14,5 +14,5 @@ def intersection(polygon:shapely.geometry.Polygon,room_rtree:rtree.index.Index,r
         receiver_room = room_dict[receiver_room_uid]
         intersect=shapely.intersection(polygon,receiver_room.cartesian_polygon)
         if not (intersect.is_empty):
-            really_intersected_room.append(receiver_room)
+            really_intersected_room.append(receiver_room.cartesian_polygon)
     return(really_intersected_room)
