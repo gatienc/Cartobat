@@ -1,5 +1,8 @@
 # Symbolic localisation algorithm documentation
 
+The princip of the algorithm is to use the rssi of the receiver to predict the zone in wich the emitter could be for each receiver.
+Once the zone for each predictor is predicted, intersection of all the predicted zones define the final predicted zone for the emitter position.
+
 ## `ZoneSelector`
 
 The `ZoneSelector` class is used to select the zone in wich the emitter could be according to one receiver.
