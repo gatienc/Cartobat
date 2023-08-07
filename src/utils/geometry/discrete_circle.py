@@ -11,7 +11,6 @@ def discrete_circle(n:int,center:tuple,radius:float)->Polygon:
     for i in range(n):
         x=center[0]+radius*math.cos(2*math.pi*i/n)
         y=center[1]+radius*math.sin(2*math.pi*i/n)
-        print(x,y)
         points.append((x,y))
     return Polygon(points)
 
