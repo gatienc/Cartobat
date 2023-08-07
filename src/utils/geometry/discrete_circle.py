@@ -5,7 +5,6 @@ def discrete_circle(n:int,center:tuple,radius:float)->Polygon:
     """
     Create a shapely.polygon with n points on the circle
     """
-    print(f"center={center} radius={radius}")
 
     points=[]
     for i in range(n):
