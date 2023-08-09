@@ -83,7 +83,6 @@ def MapCreation(receiver_dict:dict,room_dict:dict)->folium.Map:
 
     map_object.add_child(room_fg)
     map_object.add_child(receiver_fg)
-    map_object.add_child(folium.LayerControl())
 
     return map_object
 
