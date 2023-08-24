@@ -3,10 +3,10 @@ from src.utils.geometry import discrete_circle,intersection
 import rtree
 class ZoneSelector():
     def __init__(self,room_r_tree:rtree,room_dict:dict):
-      self.Threshold1 = -40
-      self.Threshold2 = -75
-      self.radius1=2.5
-      self.radius2=5
+      self.Threshold1 = -45
+      self.Threshold2 = -68
+      self.radius1=4
+      self.radius2=7
       self.room_r_tree=room_r_tree
       self.room_dict=room_dict
     def set_threshold(self,Threshold1:int,Threshold2:int):
